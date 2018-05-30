@@ -17,9 +17,9 @@ return [
     // 数据库名
     'database'        => 'fpw',
     // 用户名
-    'username'        => 'fpw',
+    'username'        => 'root',
     // 密码
-    'password'        => 'fpw123',
+    'password'        => 'root123',
     // 端口
     'hostport'        => '',
     // 连接dsn
