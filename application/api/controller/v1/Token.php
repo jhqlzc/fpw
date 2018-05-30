@@ -48,8 +48,8 @@ class Token extends BaseController
                 $userInfo = $oAuth->oAuthGetUserInfo($accessToken['access_token'], $accessToken['openid']);
                 $wxt = new WeiXinToken();
                 $token = $wxt->get($userInfo);
-//                $vueUrl = config('setting.domain')."/#/author/".$token;
-                $vueUrl = "http://192.168.1.110:8080/#/author/".$token;
+               $vueUrl = config('setting.domain')."/#/author/".$token;
+               /* $vueUrl = "http://192.168.1.110:8080/#/author/".$token;*/
                 header("Location:$vueUrl");
             }
         }
