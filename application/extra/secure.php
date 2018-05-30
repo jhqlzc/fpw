@@ -9,5 +9,5 @@
 return [
     'token_salt' => 'fangpaiwang',
     'token_expire_in' => 7200,
-    'wx_pay_back_url' => 'http://www.5d1.top/api/v1/wxpay/notify',
+    'wx_pay_back_url' => 'http://www.ycxfun.com/api/v1/wxpay/notify',
 ];

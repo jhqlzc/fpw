@@ -8,5 +8,5 @@
 
 return [
     'version' => 'v1',
-    'domain' => 'http://www.5d1.top',
+    'domain' => 'http://www.ycxfun.com',
 ];
