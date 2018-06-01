@@ -93,7 +93,7 @@ class WeChatCallBack extends BaseController
         }
     }
     //回复关注后的事件
-    public function receiveSubscribe($object){
+    private function receiveSubscribe($object){
         if(strtolower($object->Event == 'subscribe')){
             //实例化模型
             $content = '欢迎关注纺织网微信公众账号！';
@@ -102,7 +102,51 @@ class WeChatCallBack extends BaseController
         }
     }
     //接收文本消息
-    private function receiveText($object)
+    private function receiveText($object){
+        if(trim($object->Content)=='5'){
+            //从数据库中查询得到的
+            $arr = array(
+                array(
+                    'title'=>'imooc',
+                    'description'=>"imooc is very cool",
+                    'picUrl'=>'http://www.imooc.com/static/img/common/logo.png',
+                    'url'=>'http://www.imooc.com',
+                ),
+                array(
+                    'title'=>'hao123',
+                    'description'=>"hao123 is very cool",
+                    'picUrl'=>'https://www.baidu.com/img/bdlogo.png',
+                    'url'=>'http://www.hao123.com',
+                ),
+                array(
+                    'title'=>'qq',
+                    'description'=>"qq is very cool",
+                    'picUrl'=>'http://www.imooc.com/static/img/common/logo.png',
+                    'url'=>'http://www.qq.com',
+                ),
+            );
+            //实例化模型
+            $indexModel = new WeChatCallBackModel;
+            $indexModel->responseNews($object,$arr);
+        }else{
+            switch( trim($object->Content) ){
+                case 1:
+                    $content = '您输入的数字是1';break;
+                case 2:
+                    $content = '您输入的数字是2';break;
+                case 3:
+                    $content = '您输入的数字是3';break;
+                case 4:
+                    $content = "<a href='http://www.baidu.com'>百度</a>";break;
+                default:
+                    $content = '输入1-5之间的数字';break;
+            }
+            //实例化模型
+            $indexModel = new WeChatCallBackModel;
+            $indexModel->responseText($object,$content);
+        }
+    }
+    /*private function receiveText($object)
     {
         $keyword = trim($object->Content);
         if (strstr($keyword, "文本")) {
@@ -138,7 +182,7 @@ class WeChatCallBack extends BaseController
         }
         return $result;
 
-    }
+    }*/
 
     //接收图片消息
     private function receiveImage($object)
