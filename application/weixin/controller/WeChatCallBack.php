@@ -95,6 +95,24 @@ class WeChatCallBack extends BaseController
             $indexModel = new WeChatCallBackModel;
             $indexModel->responseSubscribe($object,$content);
         }
+        $arr = $this->menuParameters();
+        //如果是自定义菜单中的click
+        if(strtolower($object->Event == 'CLICK')){
+            if(strtolower($object->EventKey == $arr['item1'])){
+                $content = '这是item1的事件推送';
+            }
+            if(strtolower($object->EventKey == $arr['item2'])){
+                $content = '这是item2的事件推送';
+            }
+            $indexModel = new WeChatCallBackModel;
+            $indexModel->responseText($object,$content);
+        }
+        //如果是自定义菜单中的view
+        if(strtolower($object->Event == 'VIEW')){
+            $content = '你即将跳转到'.$object->EventKey;
+            $indexModel = new WeChatCallBackModel;
+            $indexModel->responseText($object,$content);
+        }
     }
     //接收文本消息
     private function receiveText($object){

@@ -28,4 +28,8 @@ class BaseController extends Controller
         curl_close($curl);
         return $output;
     }
+    //菜单中点击事件，需要参数支持
+    public function menuParameters(){
+        return $arr = ['item1'=>'key1','item2'=>'key2','item3'=>'key3'];
+    }
 }

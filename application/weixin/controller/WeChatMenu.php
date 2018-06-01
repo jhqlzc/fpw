@@ -13,6 +13,7 @@ class WeChatMenu extends WeChatAPI
 {
     public function definedMenu()
     {
+        $arr = $this->menuParameters();
         $access_token = $this->accessToken();
         $url = "https://api.weixin.qq.com/cgi-bin/menu/create?access_token=".$access_token;
         $postArr = array(
@@ -20,7 +21,7 @@ class WeChatMenu extends WeChatAPI
                 array(
                     'name'=>urlencode('关于我们'),
                     'type'=>'click',
-                    'key'=>'item1',
+                    'key'=>$arr['item1'],
                 ),
                 array(
                     'name'=>urlencode('历史消息'),
@@ -28,7 +29,7 @@ class WeChatMenu extends WeChatAPI
                         array(
                             'name'=>urlencode('歌曲'),
                             'type'=>'click',
-                            'key'=>'songs',
+                            'key'=>$arr['item2'],
                         ),
                         array(
                             'name'=>urlencode('百度'),
@@ -40,7 +41,7 @@ class WeChatMenu extends WeChatAPI
                 array(
                     'name'=>urlencode('会员中心'),
                     'type'=>'view',
-                    'url'=>'http://www.qq.com'
+                    'url'=>'http://www.ycxfun.com'
                 )
             ),
         );
