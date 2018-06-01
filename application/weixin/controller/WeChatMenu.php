@@ -15,7 +15,7 @@ class WeChatMenu extends WeChatAPI
     {
         $arr = $this->menuParameters();
         $access_token = $this->accessToken();
-        $url = "https://api.weixin.qq.com/cgi-bin/menu/create?access_token=10_zaPlRC2GWSynjrdXNdDbLt1C12GKv1yzObYfF_TVs9bjQaGR9pR-cLCCzQIeHiU36QmKLugMNOjURLdh3O2fNJv_1Mat8lmitkbHnBgsmNla6jwc-4BaHxBL86U_qDcl8d1-fyvAY0s2b2__KMBiAFAWYN";
+        $url = "https://api.weixin.qq.com/cgi-bin/menu/create?access_token=".$access_token;
         $postArr = array(
             'button'=>array(
                 array(
@@ -47,6 +47,6 @@ class WeChatMenu extends WeChatAPI
         );
         $postJson = urldecode(json_encode($postArr));
         $res = $this->httpRequest($url,$postJson);
-        var_dump($res);
+        var_dump(json_decode($res, true));
     }
 }
