@@ -55,8 +55,6 @@ class WeChatCallBack extends BaseController
 
     private function responseMsg()
     {
-
-//        $postStr = $GLOBALS["HTTP_RAW_POST_DATA"];
         $postStr = file_get_contents("php://input");
         if (!empty($postStr)) {
             $this->logger("R \r\n".$postStr);
@@ -74,9 +72,6 @@ class WeChatCallBack extends BaseController
                     break;
                 case 'location':
                     $result = $this->receiveLocation($postObj);
-                    break;
-                case 'voice':
-
                     break;
                 case 'link':
                     $result = $this->receiveLink($postObj);
@@ -146,125 +141,32 @@ class WeChatCallBack extends BaseController
             $indexModel->responseText($object,$content);
         }
     }
-    /*private function receiveText($object)
-    {
-        $keyword = trim($object->Content);
-        if (strstr($keyword, "文本")) {
-            $content = "这是个文本消息";
-        } else if (strstr($keyword, "表情")) {
-            $content = "中国国旗：".$this->utf8Bytes(0x1F1E8).$this->utf8Bytes(0x1F1F3)."\n".
-                "美国国旗".$this->utf8Bytes(0x1F1FA).$this->utf8Bytes(0x1F1F8)."\n".
-                "男女牵手".$this->utf8Bytes(0x1F46B)."\n".
-                "仙人掌".$this->utf8Bytes(0x1F335)."\n".
-                "电话机".$this->utf8Bytes(0x260E)."\n".
-                "药丸".$this->utf8Bytes(0x1F48A);
-        } else if (strstr($keyword, "单图文")) {
-            $content = array();
-            $content[] = array("Title" => "", "Description" => "", "PicUrl" => "", "Url" => "");
-        } else if (strstr($keyword, "图文") || strstr($keyword, "多图文")) {
-            $content = array();
-            $content[] = array("Title" => "", "Description" => "", "PicUrl" => "", "Url" => "");
-        } else if (strstr($keyword, "音乐")) {
-            $content = array();
-            $content = array("Title" => "嗨骑之歌（伴奏）", 'Description' => '歌手：高颖', 'MusicUrl' => "http://www.5d1.top/music/haiqizhige.mp3", "HQMusicUrl" => 'http://www.5d1.top/music/haiqizhige.mp3');
-        } else {
-            $content = date("Y-m-d H:i:s",time())."\nOpenID:".$object->FromUserName."\n技术支持 糯米蛟";
-        }
-
-        if (is_array($content)) {
-            if (isset($content[0])) {
-
-            } else if (isset($content['MusicUrl'])) {
-                $result = $this->transmitMusic($object, $content);
-            }
-        } else {
-            $result = $this->transmitText($object, $content);
-        }
-        return $result;
-
-    }*/
 
     //接收图片消息
     private function receiveImage($object)
     {
         $content = array('MediaId'=>$object->MediaId);
-        $result = $this->transmitImage($object, $content);
-        return $result;
+        //实例化模型
+        $indexModel = new WeChatCallBackModel;
+        $indexModel->responseImage($object,$content);
     }
 
     //接收位置消息
     private function receiveLocation($object)
     {
         $content = "你发送的位置，经度为：".$object->Location_Y."；纬度为".$object->Location_X."；缩放级别为：".$object->Scale."；位置为：".$object->Label;
-        $result = $this->transmitText($object, $content);
-        return $result;
+        //实例化模型
+        $indexModel = new WeChatCallBackModel;
+        $indexModel->responseText($object,$content);
     }
 
     //接收链接消息
     private function receiveLink($object)
     {
         $content = "你发送的是链接，标题为：" . $object->Title . "；内容为：" . $object->Description . "；链接地址为：" . $object->Url;
-        $result = $this->transmitText($object, $content);
-        return $result;
-    }
-
-    //回复文本消息
-    private function transmitText($object, $content)
-    {
-        if (!isset($content) || empty($content)) {
-            return "";
-        }
-        $xmlTpl = "<xml>
-                   <ToUserName><![CDATA[%s]]></ToUserName>
-                   <FromUserName><![CDATA[%s]]></FromUserName>
-                   <CreateTime>%s</CreateTime>
-                   <MsgType><![CDATA[text]]></MsgType>
-                   <Content><![CDATA[%s]]></Content>
-                   </xml>";
-        $result = sprintf($xmlTpl, $object->FromUserName, $object->ToUserName, time(), $content);
-        return $result;
-    }
-
-    //回复音乐消息
-    private function transmitMusic($object, $musicArray)
-    {
-        if (!is_array($musicArray)) {
-            return "";
-        }
-        $itemTpl = "<Music>
-                    <Title><![CDATA[%s]]></Title>
-                    <Description><![CDATA[%s]]></Description>
-                    <MusicUrl><![CDATA[%s]]></MusicUrl>
-                    <HQMusicUrl><![CDATA[%s]]></HQMusicUrl>
-                    </Music>";
-        $itemStr = sprintf($itemTpl, $musicArray['Title'], $musicArray['Description'], $musicArray['MusicUrl'], $musicArray['HQMusicUrl']);
-        $xmlTpl = "<xml>
-                   <ToUserName><![CDATA[%s]]></ToUserName>
-                   <FromUserName><![CDATA[%s]]></FromUserName>
-                   <CreateTime>%s</CreateTime>
-                   <MsgType><![CDATA[music]]></MsgType>
-                   $itemStr
-                   </xml>";
-        $result = sprintf($xmlTpl, $object->FromUserName, $object->ToUserName, time());
-        return $result;
-    }
-
-    //回复图片消息
-    private function transmitImage($object, $imageArray)
-    {
-        $itemTpl = "<Image>
-                    <MediaId><![CDATA[%s]]></MediaId>
-                    </Image>";
-        $itemStr = sprintf($itemTpl, $imageArray['MediaId']);
-        $xmlTpl = "<xml>
-                   <ToUserName><![CDATA[%s]]></ToUserName>
-                   <FromUserName><![CDATA[%s]]></FromUserName>
-                   <CreateTime>%s</CreateTime>
-                   <MsgType><![CDATA[image]]></MsgType>
-                   $itemStr
-                   </xml>";
-        $result = sprintf($xmlTpl, $object->FromUserName, $object->ToUserName, time());
-        return $result;
+        //实例化模型
+        $indexModel = new WeChatCallBackModel;
+        $indexModel->responseText($object,$content);
     }
 
     //添加日志

@@ -53,4 +53,43 @@ class WeChatCallBack
     public function responseSubscribe($postObj,$content){
         $this->responseText($postObj,$content);
     }
+    //回复图片消息
+    public function responseImage($postObj, $imageArray)
+    {
+        $itemTpl = "<Image>
+                    <MediaId><![CDATA[%s]]></MediaId>
+                    </Image>";
+        $itemStr = sprintf($itemTpl, $imageArray['MediaId']);
+        $xmlTpl = "<xml>
+                   <ToUserName><![CDATA[%s]]></ToUserName>
+                   <FromUserName><![CDATA[%s]]></FromUserName>
+                   <CreateTime>%s</CreateTime>
+                   <MsgType><![CDATA[image]]></MsgType>
+                   $itemStr
+                   </xml>";
+        echo  sprintf($xmlTpl, $postObj->FromUserName, $postObj->ToUserName, time());
+    }
+    //回复音乐消息
+    public function responseMusic($postObj, $musicArray)
+    {
+        if (!is_array($musicArray)) {
+            return "";
+        }
+        $itemTpl = "<Music>
+                    <Title><![CDATA[%s]]></Title>
+                    <Description><![CDATA[%s]]></Description>
+                    <MusicUrl><![CDATA[%s]]></MusicUrl>
+                    <HQMusicUrl><![CDATA[%s]]></HQMusicUrl>
+                    </Music>";
+        $itemStr = sprintf($itemTpl, $musicArray['Title'], $musicArray['Description'], $musicArray['MusicUrl'], $musicArray['HQMusicUrl']);
+        $xmlTpl = "<xml>
+                   <ToUserName><![CDATA[%s]]></ToUserName>
+                   <FromUserName><![CDATA[%s]]></FromUserName>
+                   <CreateTime>%s</CreateTime>
+                   <MsgType><![CDATA[music]]></MsgType>
+                   $itemStr
+                   </xml>";
+        echo sprintf($xmlTpl, $postObj->FromUserName, $postObj->ToUserName, time());
+    }
+
 }
