@@ -10,6 +10,7 @@ namespace app\weixin\controller;
 
 
 use think\Request;
+use app\weixin\model\WeChatCallBack as WeChatCallBackModel;
 
 class WeChatCallBack extends BaseController
 {
@@ -63,7 +64,7 @@ class WeChatCallBack extends BaseController
             $RX_TYPE = trim($postObj->MsgType);
             switch ($RX_TYPE) {
                 case 'event':
-
+                    $result = $this->receiveSubscribe($postObj);
                     break;
                 case 'text':
                     $result = $this->receiveText($postObj);
@@ -91,7 +92,15 @@ class WeChatCallBack extends BaseController
             exit;
         }
     }
-
+    //回复关注后的事件
+    public function receiveSubscribe($object){
+        if(strtolower($object->Event == 'subscribe')){
+            //实例化模型
+            $content = '欢迎关注纺织网微信公众账号！';
+            $indexModel = new WeChatCallBackModel;
+            $indexModel->responseSubscribe($object,$content);
+        }
+    }
     //接收文本消息
     private function receiveText($object)
     {
