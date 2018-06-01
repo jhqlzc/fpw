@@ -36,7 +36,7 @@ class WeChatAPI extends BaseController
         }
     }
 
-    public function ac()
+    public function accessToken()
     {
         return $this->accessToken;
     }
