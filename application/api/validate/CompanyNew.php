@@ -13,7 +13,7 @@ class CompanyNew extends BaseValidate
 {
     protected $rule = [
         'contact'=>'require',
-        'phone'=>'require',
+        'phone'=>'require|isMobile',
         'company_name' => 'require|isNotEmpty',
         'company_desc'=>'require|isNotEmpty'
     ];

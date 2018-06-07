@@ -12,9 +12,9 @@ namespace app\api\validate;
 class CompanyImg extends BaseValidate
 {
     protected $rule = [
-        'pic_type' => 'require|in:LogoImg,LicenseImg',
+        'pic_type' => 'require|in:logo,license',
     ];
     protected $message = [
-        'pic_type' => 'pic_type值必须是LogoImg或LicenseImg',
+        'pic_type' => 'pic_type值必须是logo或license',
     ];
 }
