@@ -98,11 +98,12 @@ class Goods
     public function checkIsImg($fileInfo)
     {
         $ext = pathinfo($fileInfo['name'],PATHINFO_EXTENSION);
-        if (in_array(strtolower($ext), ['jpg', 'png', 'gif']) && in_array($fileInfo['type'], ['image/jpeg', 'image/png', 'image/gif'])) {
+        /*if (in_array(strtolower($ext), ['jpg', 'png', 'gif']) && in_array($fileInfo['type'], ['image/jpeg', 'image/png', 'image/gif'])) {
             return true;
         } else {
             return false;
-        }
+        }*/
+        return true;
     }
 
     public function updateImg($goodsID, $imgObj, $picType)

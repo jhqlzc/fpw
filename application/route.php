@@ -83,6 +83,13 @@ Route::post('api/:version/wxpay/notify', 'api/:version.WxPay/receiveNotify');
 Route::get('api/:version/user', 'api/:version.User/getUserInfo');
 
 
+//上传公司图片
+Route::post('api/:version/company/upload_img','api/:version.Company/uploadImg');
+//删除图片
+Route::get('api/:version/company/del_pic/:name','api/:version.Company/delImg');
+//添加公司信息
+Route::post('api/:version/company/upload_info','api/:version.Company/addCompany');
+
 
 
 
