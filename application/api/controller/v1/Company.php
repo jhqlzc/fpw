@@ -59,7 +59,7 @@ class Company
         $validate = new CompanyNew();
         $request = $validate->goCheck();
         //根据token获取用户信息
-        $uid = 5;
+        $uid = TokenService::getCurrentUid();
         $user = UserModel::get($uid);
         if (!$user) {
             throw new UserException();
