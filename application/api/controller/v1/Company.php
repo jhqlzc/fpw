@@ -17,6 +17,7 @@ use think\Cache;
 use think\Exception;
 use app\api\model\User as UserModel;
 use app\api\service\Token as TokenService;
+use app\api\Service\Company as CompanyService;
 
 class Company
 {
@@ -69,32 +70,12 @@ class Company
         throw new SuccessMessage();
     }
     public function showCompany(){
-        $uid = 4;
+        $uid = TokenService::getCurrentUid();
         $user = UserModel::get($uid);
         if (!$user) {
             throw new UserException();
         }
-        //规定只要填写了联系人或者手机号就查找出来所有信息
-        if($user->contact || $user->phone){
-            $arr = array(
-                'logo'=>config('setting.domain').$user->logo,
-                'license'=>config('setting.domain').$user->license,
-                'contact'=>$user->contact,
-                'phone'=>$user->phone,
-                'company_name'=>$user->company_name,
-                'company_desc'=>$user->company_desc
-            );
-            if($user->logo){
-                $logo = explode('/',$user->logo);
-                $arr['logo_name'] = $logo[2];
-            }
-            if($user->license){
-                $license = explode('/',$user->license);
-                $arr['license_name'] = $license[2];
-            }
-            return json(['error_code'=>'ok','data'=>$arr]);
-        }else{
-            return json(['error_code'=>'error','data'=>'你还没有填写公司信息呢']);
-        }
+        $data = CompanyService::checkData($user);
+        return json(['error_code'=>'ok', 'data'=>$data]);
     }
 }
