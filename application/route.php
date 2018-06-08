@@ -89,7 +89,8 @@ Route::post('api/:version/company/upload_img','api/:version.Company/uploadImg');
 Route::get('api/:version/company/del_pic/:name/:type','api/:version.Company/delImg');
 //添加公司信息
 Route::post('api/:version/company/upload_info','api/:version.Company/addCompany');
-
+//获取信息
+Route::get('api/:version/company/show','api/:version.Company/showCompany');
 
 
 

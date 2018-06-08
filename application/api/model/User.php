@@ -18,7 +18,12 @@ class User extends BaseModel
     {
         return config('setting.domain').$value;
     }
-
+    public function getLogoAttr($value,$data){
+        return config('setting.domain').$value;
+    }
+    public function getLicenseAttr($value,$data){
+        return config('setting.domain').$value;
+    }
     public function address()
     {
         return $this->hasMany('Address', 'user_id', 'id');

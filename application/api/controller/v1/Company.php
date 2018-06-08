@@ -68,4 +68,26 @@ class Company
         $user->isUpdate()->save($dataArray);
         throw new SuccessMessage();
     }
+    public function showCompany(){
+        $uid = TokenService::getCurrentUid();
+        $user = UserModel::get($uid);
+        if (!$user) {
+            throw new UserException();
+        }
+        //如果用户填写了公司详情，就返给信息
+        $arr = array(
+            'logo'=>$user->logo,
+            'license'=>$user->license,
+            'contact'=>$user->contact,
+            'phone'=>$user->phone,
+            'company_name'=>$user->company_name,
+            'company_desc'=>$user->company_desc,
+        );
+        //规定只要填写了联系人或者手机号就查找出来所有信息
+        if($user->contact || $user->phone){
+            return json(['error_code'=>'ok','data'=>$arr]);
+        }else{
+            return json(['error_code'=>'error','data'=>'你还没有填写公司信息呢']);
+        }
+    }
 }
