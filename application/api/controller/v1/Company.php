@@ -69,26 +69,29 @@ class Company
         throw new SuccessMessage();
     }
     public function showCompany(){
-        $uid = TokenService::getCurrentUid();
+        $uid = 4;
         $user = UserModel::get($uid);
         if (!$user) {
             throw new UserException();
         }
-        //如果用户填写了公司详情，就返给信息
-        $logo = explode('/',$user->logo);
-        $license = explode('/',$user->license);
-        $arr = array(
-            'logo'=>config('setting.domain').$user->logo,
-            'license'=>config('setting.domain').$user->license,
-            'contact'=>$user->contact,
-            'phone'=>$user->phone,
-            'company_name'=>$user->company_name,
-            'company_desc'=>$user->company_desc,
-            'logo_name'=>$logo[2],
-            'license_name'=>$license[2]
-        );
         //规定只要填写了联系人或者手机号就查找出来所有信息
         if($user->contact || $user->phone){
+            $arr = array(
+                'logo'=>config('setting.domain').$user->logo,
+                'license'=>config('setting.domain').$user->license,
+                'contact'=>$user->contact,
+                'phone'=>$user->phone,
+                'company_name'=>$user->company_name,
+                'company_desc'=>$user->company_desc
+            );
+            if($user->logo){
+                $logo = explode('/',$user->logo);
+                $arr['logo_name'] = $logo[2];
+            }
+            if($user->license){
+                $license = explode('/',$user->license);
+                $arr['license_name'] = $license[2];
+            }
             return json(['error_code'=>'ok','data'=>$arr]);
         }else{
             return json(['error_code'=>'error','data'=>'你还没有填写公司信息呢']);
