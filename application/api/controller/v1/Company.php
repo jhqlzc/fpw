@@ -78,8 +78,8 @@ class Company
         $logo = explode('/',$user->logo);
         $license = explode('/',$user->license);
         $arr = array(
-            'logo'=>$user->logo,
-            'license'=>$user->license,
+            'logo'=>config('setting.domain').$user->logo,
+            'license'=>config('setting.domain').$user->license,
             'contact'=>$user->contact,
             'phone'=>$user->phone,
             'company_name'=>$user->company_name,
