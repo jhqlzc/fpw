@@ -75,6 +75,8 @@ class Company
             throw new UserException();
         }
         //如果用户填写了公司详情，就返给信息
+        $logo = explode('/',$user->logo);
+        $license = explode('/',$user->license);
         $arr = array(
             'logo'=>$user->logo,
             'license'=>$user->license,
@@ -82,6 +84,8 @@ class Company
             'phone'=>$user->phone,
             'company_name'=>$user->company_name,
             'company_desc'=>$user->company_desc,
+            'logo_name'=>$logo[2],
+            'license_name'=>$license[2]
         );
         //规定只要填写了联系人或者手机号就查找出来所有信息
         if($user->contact || $user->phone){
