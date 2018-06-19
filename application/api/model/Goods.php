@@ -133,7 +133,7 @@ class Goods extends BaseModel
             } else {
                 $goodsDetail['remind_status'] = GoodsRemindStatusEnum::REMIND;
             }
-
+            $goodsDetail['pay_status'] = PayStatusEnum::UNPAYALL;
         } else {
             $goodsDetail['pay_status'] = PayStatusEnum::UNPAYALL;
             $goodsDetail['remind_status'] = GoodsRemindStatusEnum::UNREMIND;
