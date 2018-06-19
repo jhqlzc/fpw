@@ -68,7 +68,7 @@ Route::get('api/:version/address/all', 'api/:version.Address/getAllAddressByUser
 //竞价
 Route::get('api/:version/bid/:id', 'api/:version.Bid/bid');
 //报名
-Route::post('api/:version/enroll', 'api/:version.AuctionEnroll/enroll');
+Route::get('api/:version/enroll/:goods_id/:address_id', 'api/:version.AuctionEnroll/enroll');
 
 //支付保证金
 Route::post('api/:version/wx_enroll_pay', 'api/:version.WxPay/getEnrollPreOrder');
